@@ -1,0 +1,20 @@
+[
+  {
+    "name": "/viewlog",
+    "steps": [
+      {
+        "expect": [
+          {
+            "method": "sendMessage",
+            "payload": {
+              "text": "Display recent moderation actions log"
+            }
+          }
+        ],
+        "send": {
+          "text": "/viewlog"
+        }
+      }
+    ]
+  }
+]
