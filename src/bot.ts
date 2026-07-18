@@ -6,7 +6,27 @@ import { createBot, type BotContext } from "./toolkit/index.js";
 // bot grows. Durable domain data must NOT live here — use the toolkit's
 // persistent storage (see AGENTS.md).
 export interface Session {
-  // example: step?: "awaiting_amount";
+  step?:
+    | "idle"
+    | "awaiting_welcome_text"
+    | "awaiting_welcome_button"
+    | "awaiting_welcome_timeout"
+    | "awaiting_threshold_type"
+    | "awaiting_threshold_value"
+    | "awaiting_rule_type"
+    | "awaiting_rule_action"
+    | "awaiting_rule_value"
+    | "awaiting_mute_duration"
+    | "awaiting_warn_reason"
+    | "awaiting_ban_reason"
+    | "awaiting_kick_reason"
+    | "awaiting_mute_reason";
+  pendingWelcome?: { text: string; buttonLabel: string };
+  pendingThreshold?: { type: string };
+  pendingRule?: { type: string; action: string };
+  pendingAdminAction?: { type: string; userId: number; chatId: number };
+  thresholdType?: string;
+  isAdmin?: boolean;
 }
 
 export type Ctx = BotContext<Session>;

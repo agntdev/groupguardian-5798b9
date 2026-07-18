@@ -1,15 +1,55 @@
 import { Composer } from "grammy";
+import type { Ctx } from "../bot.js";
+import { inlineButton, inlineKeyboard } from "../toolkit/index.js";
+import { getLog, getLogCount } from "../data.js";
 
-// SCAFFOLD — generated from the bot blueprint BEFORE the agent runs.
-// Keep a LIVE registration (.command / .callbackQuery / …) so this feature is
-// never an empty stub. Replace the reply body with real logic + copy; if you
-// change the user-facing text, update tests/specs to match EXACTLY.
-// Do NOT rewrite src/bot.ts — buildBot() already auto-loads this module.
+const composer = new Composer<Ctx>();
 
-const composer = new Composer();
+function formatEntry(e: { actionType: string; targetUser: number; reason: string; timestamp: number; isAutomated: boolean }): string {
+  const date = new Date(e.timestamp).toISOString().slice(0, 16).replace("T", " ");
+  const auto = e.isAutomated ? " [auto]" : "";
+  return `${date} — ${e.actionType}${auto} → user ${e.targetUser}: ${e.reason}`;
+}
+
+composer.callbackQuery("viewlog:show", async (ctx) => {
+  await ctx.answerCallbackQuery();
+  const entries = await getLog(10);
+  const total = await getLogCount();
+
+  if (entries.length === 0) {
+    await ctx.editMessageText("No moderation actions logged yet.", {
+      reply_markup: inlineKeyboard([[inlineButton("⬅️ Back to menu", "menu:main")]]),
+    });
+    return;
+  }
+
+  const lines = entries.map(formatEntry);
+  await ctx.editMessageText(
+    `Recent actions (${total} total, showing last ${entries.length}):\n\n${lines.join("\n")}`,
+    {
+      reply_markup: inlineKeyboard([[inlineButton("⬅️ Back to menu", "menu:main")]]),
+    },
+  );
+});
 
 composer.command("viewlog", async (ctx) => {
-  await ctx.reply("Display recent moderation actions log");
+  const entries = await getLog(10);
+  const total = await getLogCount();
+
+  if (entries.length === 0) {
+    await ctx.reply("No moderation actions logged yet.", {
+      reply_markup: inlineKeyboard([[inlineButton("⬅️ Back to menu", "menu:main")]]),
+    });
+    return;
+  }
+
+  const lines = entries.map(formatEntry);
+  await ctx.reply(
+    `Recent actions (${total} total, showing last ${entries.length}):\n\n${lines.join("\n")}`,
+    {
+      reply_markup: inlineKeyboard([[inlineButton("⬅️ Back to menu", "menu:main")]]),
+    },
+  );
 });
 
 export default composer;
