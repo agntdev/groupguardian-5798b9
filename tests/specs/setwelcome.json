@@ -1,19 +1,33 @@
 [
   {
-    "name": "/setwelcome",
+    "name": "/setwelcome shows the current welcome template",
     "steps": [
       {
+        "send": { "text": "/setwelcome" },
         "expect": [
           {
             "method": "sendMessage",
             "payload": {
-              "text": "Configure welcome message template"
+              "text": "Current welcome message:\n\nWelcome to the group! Please verify you're human.\n\nButton: I'm human\nTimeout notice: You didn't verify in time. Goodbye."
             }
           }
-        ],
-        "send": {
-          "text": "/setwelcome"
-        }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "setwelcome:show callback shows welcome settings",
+    "steps": [
+      {
+        "send": { "callback": "setwelcome:show" },
+        "expect": [
+          {
+            "method": "editMessageText",
+            "payload": {
+              "text": "Current welcome message:\n\nWelcome to the group! Please verify you're human.\n\nButton: I'm human\nTimeout notice: You didn't verify in time. Goodbye."
+            }
+          }
+        ]
       }
     ]
   }

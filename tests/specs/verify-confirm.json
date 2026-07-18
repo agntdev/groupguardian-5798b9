@@ -1,19 +1,17 @@
 [
   {
-    "name": "I'm human / Verify",
+    "name": "verify:confirm callback verifies the user",
     "steps": [
       {
+        "send": { "callback": "verify:confirm" },
         "expect": [
           {
-            "method": "sendMessage",
+            "method": "editMessageText",
             "payload": {
-              "text": "Verification button for new members"
+              "text": "✅ You're verified! Welcome to the group."
             }
           }
-        ],
-        "send": {
-          "callback": "verify:confirm"
-        }
+        ]
       }
     ]
   }

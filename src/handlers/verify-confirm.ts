@@ -1,17 +1,37 @@
 import { Composer } from "grammy";
+import type { Ctx } from "../bot.js";
+import { inlineButton, inlineKeyboard } from "../toolkit/index.js";
+import { getMember, setMember, now } from "../data.js";
 
-// SCAFFOLD — generated from the bot blueprint BEFORE the agent runs.
-// Keep a LIVE registration (.command / .callbackQuery / …) so this feature is
-// never an empty stub. Replace the reply body with real logic + copy; if you
-// change the user-facing text, update tests/specs to match EXACTLY.
-// Do NOT rewrite src/bot.ts — buildBot() already auto-loads this module.
-// Menu: wire this into /start via registerMainMenuItem({ label: "I'm human / Verify", data: "verify:confirm" }) if the toolkit exposes it.
-
-const composer = new Composer();
+const composer = new Composer<Ctx>();
 
 composer.callbackQuery("verify:confirm", async (ctx) => {
   await ctx.answerCallbackQuery();
-  await ctx.reply("Verification button for new members");
+  const userId = ctx.from?.id;
+  if (!userId) return;
+
+  const existing = await getMember(ctx.chat?.id ?? 0, userId);
+  if (existing && existing.trustStatus === "verified") {
+    await ctx.editMessageText("You're already verified.", {
+      reply_markup: inlineKeyboard([[inlineButton("⬅️ Back to menu", "menu:main")]]),
+    });
+    return;
+  }
+
+  const member = existing ?? {
+    userId,
+    displayName: ctx.from?.first_name ?? "User",
+    joinTime: now(),
+    trustStatus: "verified" as const,
+    adminStatus: false,
+    warnings: 0,
+  };
+  member.trustStatus = "verified";
+  await setMember(ctx.chat?.id ?? 0, member);
+
+  await ctx.editMessageText("✅ You're verified! Welcome to the group.", {
+    reply_markup: inlineKeyboard([[inlineButton("⬅️ Back to menu", "menu:main")]]),
+  });
 });
 
 export default composer;

@@ -1,19 +1,33 @@
 [
   {
-    "name": "/setthresholds",
+    "name": "/setthresholds shows current spam thresholds",
     "steps": [
       {
+        "send": { "text": "/setthresholds" },
         "expect": [
           {
             "method": "sendMessage",
             "payload": {
-              "text": "Adjust spam detection thresholds"
+              "text": "Current spam thresholds:\n\nIdentical message repeats: 3\nFlood rate: 5\nFlood window (seconds): 10\nMin account age (hours): 48"
             }
           }
-        ],
-        "send": {
-          "text": "/setthresholds"
-        }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "setthresholds:show callback shows thresholds",
+    "steps": [
+      {
+        "send": { "callback": "setthresholds:show" },
+        "expect": [
+          {
+            "method": "editMessageText",
+            "payload": {
+              "text": "Current spam thresholds:\n\nIdentical message repeats: 3\nFlood rate: 5\nFlood window (seconds): 10\nMin account age (hours): 48"
+            }
+          }
+        ]
       }
     ]
   }

@@ -1,0 +1,86 @@
+[
+  {
+    "name": "/warn in private chat requires admin",
+    "steps": [
+      {
+        "send": { "text": "/warn 123 spamming" },
+        "expect": [
+          {
+            "method": "sendMessage",
+            "payload": { "text": "Only admins can use this command." }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "/mute in private chat requires admin",
+    "steps": [
+      {
+        "send": { "text": "/mute 123 5 flood" },
+        "expect": [
+          {
+            "method": "sendMessage",
+            "payload": { "text": "Only admins can use this command." }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "/kick in private chat requires admin",
+    "steps": [
+      {
+        "send": { "text": "/kick 123 spam" },
+        "expect": [
+          {
+            "method": "sendMessage",
+            "payload": { "text": "Only admins can use this command." }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "/ban in private chat requires admin",
+    "steps": [
+      {
+        "send": { "text": "/ban 123 repeated spam" },
+        "expect": [
+          {
+            "method": "sendMessage",
+            "payload": { "text": "Only admins can use this command." }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "/trust in private chat requires admin",
+    "steps": [
+      {
+        "send": { "text": "/trust 123" },
+        "expect": [
+          {
+            "method": "sendMessage",
+            "payload": { "text": "Only admins can use this command." }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "/untrust in private chat requires admin",
+    "steps": [
+      {
+        "send": { "text": "/untrust 123" },
+        "expect": [
+          {
+            "method": "sendMessage",
+            "payload": { "text": "Only admins can use this command." }
+          }
+        ]
+      }
+    ]
+  }
+]

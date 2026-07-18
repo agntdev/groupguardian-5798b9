@@ -1,14 +1,14 @@
 [
   {
-    "name": "/viewlog shows no actions when log is empty",
+    "name": "/setrules shows no rules when empty",
     "steps": [
       {
-        "send": { "text": "/viewlog" },
+        "send": { "text": "/setrules" },
         "expect": [
           {
             "method": "sendMessage",
             "payload": {
-              "text": "No moderation actions logged yet."
+              "text": "No spam rules configured yet."
             }
           }
         ]
@@ -16,15 +16,15 @@
     ]
   },
   {
-    "name": "viewlog:show callback shows no actions when empty",
+    "name": "setrules:show callback shows no rules when empty",
     "steps": [
       {
-        "send": { "callback": "viewlog:show" },
+        "send": { "callback": "setrules:show" },
         "expect": [
           {
             "method": "editMessageText",
             "payload": {
-              "text": "No moderation actions logged yet."
+              "text": "No spam rules configured yet."
             }
           }
         ]
