@@ -1,0 +1,20 @@
+[
+  {
+    "name": "/setthresholds",
+    "steps": [
+      {
+        "expect": [
+          {
+            "method": "sendMessage",
+            "payload": {
+              "text": "Adjust spam detection thresholds"
+            }
+          }
+        ],
+        "send": {
+          "text": "/setthresholds"
+        }
+      }
+    ]
+  }
+]
